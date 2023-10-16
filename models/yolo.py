@@ -22,7 +22,7 @@ if platform.system() != "Windows":
     ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 from api.yolo.models.common import *  # noqa
-from api.yolo.experimental import *  # noqa
+from api.yolo.models.experimental import *  # noqa
 from api.yolo.utils.autoanchor import check_anchor_order
 from api.yolo.utils.general import LOGGER, check_version, check_yaml, make_divisible, print_args
 from api.yolo.utils.plots import feature_visualization
