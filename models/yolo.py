@@ -21,12 +21,12 @@ if str(ROOT) not in sys.path:
 if platform.system() != "Windows":
     ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
-from .common import *  # noqa
-from .experimental import *  # noqa
-from ..utils.autoanchor import check_anchor_order
-from ..utils.general import LOGGER, check_version, check_yaml, make_divisible, print_args
-from ..utils.plots import feature_visualization
-from ..utils.torch_utils import (
+from api.yolo.models.common import *  # noqa
+from api.yolo.experimental import *  # noqa
+from api.yolo.utils.autoanchor import check_anchor_order
+from api.yolo.utils.general import LOGGER, check_version, check_yaml, make_divisible, print_args
+from api.yolo.utils.plots import feature_visualization
+from api.yolo.utils.torch_utils import (
     fuse_conv_and_bn,
     initialize_weights,
     model_info,

@@ -5,15 +5,15 @@ import numpy as np
 import torch
 from ultralytics.utils.plotting import save_one_box
 
-from .models.common import DetectMultiBackend
-from .utils.augmentations import letterbox
-from .utils.general import (
+from api.yolo.models.common import DetectMultiBackend
+from api.yolo.utils.augmentations import letterbox
+from api.yolo.utils.general import (
     Profile,
     check_img_size,
     non_max_suppression,
     scale_boxes,
 )
-from .utils.torch_utils import select_device, smart_inference_mode
+from api.yolo.utils.torch_utils import select_device, smart_inference_mode
 
 
 WEIGHTS = Path("best.pt")
