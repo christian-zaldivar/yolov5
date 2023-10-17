@@ -28,7 +28,7 @@ from PIL import ExifTags, Image, ImageOps
 from torch.utils.data import DataLoader, Dataset, dataloader, distributed
 from tqdm import tqdm
 
-from api.yolo.utils.augmentations import (
+from utils.augmentations import (
     Albumentations,
     augment_hsv,
     classify_albumentations,
@@ -38,7 +38,7 @@ from api.yolo.utils.augmentations import (
     mixup,
     random_perspective,
 )
-from api.yolo.utils.general import (
+from utils.general import (
     DATASETS_DIR,
     LOGGER,
     NUM_THREADS,
@@ -57,7 +57,7 @@ from api.yolo.utils.general import (
     xywhn2xyxy,
     xyxy2xywhn,
 )
-from api.yolo.utils.torch_utils import torch_distributed_zero_first
+from utils.torch_utils import torch_distributed_zero_first
 
 # Parameters
 HELP_URL = "See https://docs.ultralytics.com/yolov5/tutorials/train_custom_data"
