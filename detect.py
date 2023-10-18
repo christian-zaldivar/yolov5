@@ -1,5 +1,6 @@
 # YOLOv5 🚀 by Ultralytics, AGPL-3.0 license
 from pathlib import Path
+from functools import lru_cache
 
 import numpy as np
 import torch
@@ -19,6 +20,11 @@ from api.yolo.utils.torch_utils import select_device, smart_inference_mode
 WEIGHTS = Path("best.pt")
 
 
+@lru_cache(10)
+def _model(weights: Path, device: str, dnn: bool, fp16: bool):
+    return DetectMultiBackend(weights, device=device, dnn=dnn, data=None, fp16=fp16)
+
+
 @smart_inference_mode()
 def run(
     image_: np.ndarray,
@@ -36,7 +42,7 @@ def run(
     """Detect signature and return the corresponding cropped image"""
     # Load model
     device = select_device(device)
-    model = DetectMultiBackend(weights, device=device, dnn=dnn, data=None, fp16=half)
+    model = _model(weights, device, dnn, half)
     stride, pt = model.stride, model.pt
     imgsz = check_img_size(imgsz, s=stride)  # check image size
 
