@@ -26,7 +26,7 @@ def _model(weights: Path, device: str, dnn: bool, fp16: bool):
 
 
 @smart_inference_mode()
-def run(
+def get_coords(
     image_: np.ndarray,
     add_padding: bool = False,
     weights: Path = WEIGHTS,  # model path or triton URL
@@ -38,8 +38,8 @@ def run(
     augment: bool = False,  # augmented inference
     half: bool = False,  # use FP16 half-precision inference
     dnn: bool = False,  # use OpenCV DNN for ONNX inference
-) -> np.ndarray:
-    """Detect signature and return the corresponding cropped image"""
+) -> list:
+    """Detect signature and return the coordinates"""
     # Load model
     device = select_device(device)
     model = _model(weights, device, dnn, half)
@@ -71,7 +71,6 @@ def run(
         pred = non_max_suppression(pred, conf_thres, iou_thres, 1, agnostic_nms, max_det=1)[0]
 
     # Process prediction
-    imc = image_.copy()  # for save_crop
     if len(pred):
         # Rescale boxes from img_size to im0 size
         pred[:, :4] = scale_boxes(im.shape[2:], pred[:, :4], image_.shape).round()
@@ -83,5 +82,18 @@ def run(
             xyxy[1] = xyxy[1] - 40
             xyxy[2] = xyxy[2] + 40
             xyxy[3] = xyxy[3] + 40
-        result = save_one_box(xyxy, imc, BGR=True, save=False)
-        return result
+        return xyxy
+    return []
+
+
+def get_crop(
+    image_: np.ndarray,
+    weights: Path = WEIGHTS,  # model path or triton URL
+    imgsz: tuple = (640, 640),  # inference size (height, width)
+    augment: bool = False,
+    **kwargs
+) -> np.ndarray:
+    """Detect signature and return the corresponding cropped image"""
+    xyxy = get_coords(image_, weights=weights, imgsz=imgsz, augment=augment, **kwargs)
+    result = save_one_box(xyxy, image_, BGR=True, save=False)
+    return result
