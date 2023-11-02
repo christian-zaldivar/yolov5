@@ -92,8 +92,10 @@ def get_crop(
     imgsz: tuple = (640, 640),  # inference size (height, width)
     augment: bool = False,
     **kwargs
-) -> np.ndarray:
+) -> np.ndarray | None:
     """Detect signature and return the corresponding cropped image"""
     xyxy = get_coords(image_, weights=weights, imgsz=imgsz, augment=augment, **kwargs)
+    if not xyxy:
+        return None
     result = save_one_box(xyxy, image_, BGR=True, save=False)
     return result
